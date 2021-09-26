@@ -1,0 +1,32 @@
+
+***************************************************************************
+* Compilation
+***************************************************************************
+Executing: make clean
+Executing: make all
+Running: ./p1
+
+Please enter the fighter's name, health, and damage: Please enter the orc's name, health, and damage: Thor (10)
+Snarl (12)
+Thor hits Snarl for 4 damage!
+Snarl hits Thor for 1 damage!
+Thor (9)
+Snarl (8)
+Snarl hits Thor for 3 damage!
+Thor hits Snarl for 2 damage!
+Thor (6)
+Snarl (6)
+
+Thor found,  2  marks
+Snarl found,  2  marks
+10 found,  2  marks
+12 found,  2  marks
+8 found,  2  marks
+9 found,  2  marks
+6 found,  2  marks
+
+
+***************************************************************************
+* Mark: 14/14
+***************************************************************************
+
