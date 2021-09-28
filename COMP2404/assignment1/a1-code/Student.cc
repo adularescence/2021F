@@ -1,5 +1,8 @@
 #include "Student.h"
 
+
+// constructors
+
 Student::Student() {
     setName("Johnny Appleseed");
     setNumber("100000001");
@@ -15,21 +18,8 @@ Student::Student(const Student& s) {
     setNumber(s.getNumber());
 }
 
-void Student::setName(std::string name) {
-    this->name = name;
-}
 
-void Student::setNumber(std::string number) {
-    this->number = number;
-}
-
-std::string& Student::getName() {
-    return this->name;
-}
-
-std::string& Student::getNumber() {
-    return this->number;
-}
+// get, set
 
 std::string Student::getName() const {
     return this->name;
@@ -38,6 +28,17 @@ std::string Student::getName() const {
 std::string Student::getNumber() const {
     return this->number;
 }
+
+void Student::setName(std::string name) {
+    this->name = name;
+}
+
+void Student::setNumber(std::string number) {
+    this->number = number;
+}
+
+
+// other functions
 
 bool Student::lessThan(Student& s) {
     std::string thatNumber = s.getNumber();
@@ -48,4 +49,5 @@ bool Student::lessThan(Student& s) {
             return this->number[i] < thatNumber[i];
         }
     }
+    return thatNumber.length() >= this->number.length();
 }
