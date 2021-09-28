@@ -1,5 +1,6 @@
 #include "Student.h"
 
+#include <iostream>
 
 // constructors
 
@@ -50,4 +51,9 @@ bool Student::lessThan(Student& student) {
         }
     }
     return thatNumber.length() <= this->number.length();
+}
+
+void Student::print() {
+    // [Student] $name ($number)
+    std::cout << "[Student] " << getName() << " (" << getNumber() << ")" << std::endl;
 }

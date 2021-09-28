@@ -113,10 +113,11 @@ bool Date::overlaps(Date& date) {
 
 
 void Date::print() {
-    // September 28, 2021 (For 3 hours starting from 16h)
-    cout
-        << getMonthName() << " " << getDay() << ", " << getYear()
-        << "(For " << getDuration() << " hours starting from " << getHour() << "h)" << endl;
+    // [Date] September 28, 2021 (For 3 hours starting from 16h)
+    cout <<
+        "[Date] " <<
+        getMonthName() << " " << getDay() << ", " << getYear() <<
+        "(For " << getDuration() << " hours starting from " << getHour() << "h)" << endl;
 }
 
 int Date::getMaxDay() {

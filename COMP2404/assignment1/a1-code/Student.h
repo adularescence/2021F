@@ -15,6 +15,7 @@ class Student {
         void setNumber(std::string number);
 
         bool lessThan(Student& student);
+        void print();
 
     private:
         std::string name;

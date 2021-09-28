@@ -1,5 +1,6 @@
 #include "Room.h"
 
+#include <iostream>
 
 // constructors
 
@@ -73,4 +74,9 @@ bool Room::lessThan(Room& room) {
         }
     }
     return thatName.length() <= this->name.length();
+}
+
+void Room::print() {
+    // [Room] $name ($capacity, $computers, $hasWhiteboard)
+    std::cout << "[Room] " << getName() << " (" << getCapacity() << ", " << getComputers() << ", " << hasWhiteboard() << ")" << std::endl;
 }

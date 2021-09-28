@@ -19,6 +19,7 @@ class Room {
 
         bool meetsCriteria(int capacity, int computers = 0, bool whiteboard = false);
         bool lessThan(Room& room);
+        void print();
 
     private:
         std::string name;
