@@ -11,26 +11,31 @@ using namespace std;
 
 class Date {
     public:
-        //constructor
+        //constructors
         Date();
-        Date(int year, int month, int day);
-        
-                
+        Date(int year, int month, int day, int hour, int duration);
+        Date(const Date& date);
+
         //setters
-        void setDay( int);
-        void setMonth(int);
-        void setYear(int);
-        void setDate(int, int, int);
-        void setDate(Date&);
+        void setYear(int year);
+        void setMonth(int month);
+        void setDay(int day);
+        void setHour(int hour);
+        void setDuration(int duration);
+        void setDate(int year, int month, int day, int hour, int duration);
+        void setDate(Date& date);
 
         //getters
-        int getDay();
-        int getMonth();
-        int getYear();
+        int getYear() const;
+        int getMonth() const;
+        int getDay() const;
+        int getHour() const;
+        int getDuration() const;
         const string& getMonthName();
 
         //other
-        bool lessThan(Date& d);
+        bool lessThan(Date& date);
+        bool overlaps(Date& date);
         void print();
 
     private:
@@ -46,6 +51,5 @@ class Date {
 
         const string months[12] = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
         const string smonths[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"};
-
 };
 #endif

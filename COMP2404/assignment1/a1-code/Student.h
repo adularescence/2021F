@@ -7,14 +7,14 @@ class Student {
     public:
         Student();
         Student(std::string name, std::string number);
-        Student(const Student& s);
+        Student(const Student& student);
 
         std::string getName() const;
         std::string getNumber() const;
         void setName(std::string name);
         void setNumber(std::string number);
 
-        bool lessThan(Student& s);
+        bool lessThan(Student& student);
 
     private:
         std::string name;

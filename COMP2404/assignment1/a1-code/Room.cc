@@ -10,11 +10,11 @@ Room::Room(std::string name, int capacity, int computers, bool whiteboard) {
     setWhiteboard(whiteboard);
 }
 
-Room::Room(const Room& r) {
-    setName(r.getName());
-    setCapacity(r.getCapacity());
-    setComputers(r.getComputers());
-    setWhiteboard(r.hasWhiteboard());
+Room::Room(const Room& room) {
+    setName(room.getName());
+    setCapacity(room.getCapacity());
+    setComputers(room.getComputers());
+    setWhiteboard(room.hasWhiteboard());
 }
 
 
@@ -63,8 +63,8 @@ bool Room::meetsCriteria(int capacity, int computers, bool whiteboard) {
     );
 }
 
-bool Room::lessThan(Room& r) {
-    std::string thatName = r.getName();
+bool Room::lessThan(Room& room) {
+    std::string thatName = room.getName();
     for (int i = 0; i <= this->name.length(); ++i) {
         if (this->name[i] == thatName[i]) {
             continue;
@@ -72,5 +72,5 @@ bool Room::lessThan(Room& r) {
             return this->name[i] < thatName[i];
         }
     }
-    return thatName.length() >= this->name.length();
+    return thatName.length() <= this->name.length();
 }

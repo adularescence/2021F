@@ -6,7 +6,7 @@
 class Room {
     public:
         Room(std::string name, int capacity, int computers, bool whiteboard);
-        Room(const Room& r);
+        Room(const Room& room);
 
         std::string getName() const;
         int getCapacity() const;
@@ -18,7 +18,7 @@ class Room {
         void setWhiteboard(bool whiteboard);
 
         bool meetsCriteria(int capacity, int computers = 0, bool whiteboard = false);
-        bool lessThan(Room& r);
+        bool lessThan(Room& room);
 
     private:
         std::string name;

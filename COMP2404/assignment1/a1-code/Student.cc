@@ -13,9 +13,9 @@ Student::Student(std::string name, std::string number) {
     setNumber(number);
 }
 
-Student::Student(const Student& s) {
-    setName(s.getName());
-    setNumber(s.getNumber());
+Student::Student(const Student& student) {
+    setName(student.getName());
+    setNumber(student.getNumber());
 }
 
 
@@ -40,8 +40,8 @@ void Student::setNumber(std::string number) {
 
 // other functions
 
-bool Student::lessThan(Student& s) {
-    std::string thatNumber = s.getNumber();
+bool Student::lessThan(Student& student) {
+    std::string thatNumber = student.getNumber();
     for (int i = 0; i <= this->number.length(); ++i) {
         if (this->number[i] == thatNumber[i]) {
             continue;
@@ -49,5 +49,5 @@ bool Student::lessThan(Student& s) {
             return this->number[i] < thatNumber[i];
         }
     }
-    return thatNumber.length() >= this->number.length();
+    return thatNumber.length() <= this->number.length();
 }
