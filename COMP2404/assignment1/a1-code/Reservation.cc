@@ -33,7 +33,7 @@ bool Reservation::lessThan(Reservation& reservation) {
 
 bool Reservation::overlaps(std::string name, Reservation& reservation) {
     return (
-        (name.compare(getRoom().getName()) == 0) &&
+        (name == getRoom().getName()) &&
         (getDate().overlaps(reservation.getDate()))
     );
 }

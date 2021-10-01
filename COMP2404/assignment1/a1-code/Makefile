@@ -1,4 +1,4 @@
-all: Student.o Room.o Date.o Reservation.o
+all: Student.o Room.o Date.o Reservation.o Library.o
 
 Student.o: Student.h Student.cc
 	g++ -c Student.cc
@@ -12,5 +12,8 @@ Date.o: Date.h Date.cc
 Reservation.o: Reservation.h Reservation.cc
 	g++ -c Reservation.cc
 
+Library.o: Library.h Library.cc
+	g++ -c Library.cc
+
 clean:
-	rm -f Student.o Room.o Date.o Reservation.o
+	rm -f Student.o Room.o Date.o Reservation.o Library.o
