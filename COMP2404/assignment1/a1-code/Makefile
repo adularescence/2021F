@@ -1,19 +1,25 @@
-all: Student.o Room.o Date.o Reservation.o Library.o
+all: Student.o Room.o Date.o Reservation.o Library.o main.o a1
 
-Student.o: Student.h Student.cc
-	g++ -c Student.cc
+a1: main.o
+	g++ -o a1 main.o Student.o Room.o Date.o Reservation.o Library.o -g
 
-Room.o: Room.h Room.cc
-	g++ -c Room.cc
+Student.o:
+	g++ -c Student.cc -g
 
-Date.o: Date.h Date.cc
-	g++ -c Date.cc
+Room.o:
+	g++ -c Room.cc -g
 
-Reservation.o: Reservation.h Reservation.cc
-	g++ -c Reservation.cc
+Date.o:
+	g++ -c Date.cc -g
 
-Library.o: Library.h Library.cc
-	g++ -c Library.cc
+Reservation.o:
+	g++ -c Reservation.cc -g
+
+Library.o:
+	g++ -c Library.cc -g
+
+Main.o:
+	g++ -c main.cc -g
 
 clean:
-	rm -f Student.o Room.o Date.o Reservation.o Library.o
+	rm -f *.o a1

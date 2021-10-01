@@ -33,14 +33,14 @@ void Date::setYear(int year) {
 void Date::setMonth(int month) {
     if (month > 12) month = 12;
     if (month < 1) month = 1;
-    month = month;
+    this->month = month;
 }
 
 void Date::setDay(int day) {
     int max = getMaxDay();
     if (day > max) day = max;
     if (day < 1) day = 1;
-    day = day;
+    this->day = day;
 }
  
 void Date::setHour(int hour) {
@@ -64,7 +64,13 @@ void Date::setDate(int year, int month, int day, int hour, int duration) {
 }
 
 void Date::setDate(Date& date) {
-    setDate(date.day, date.month, date.year, date.hour, date.duration);
+    setDate(
+        date.getDay(),
+        date.getMonth(),
+        date.getYear(),
+        date.getHour(),
+        date.getDuration()
+    );
 }
 
 
@@ -96,7 +102,8 @@ bool Date::lessThan(Date& date) {
 }
 
 bool Date::overlaps(Date& date) {
-    bool sameDay = (this->year == date.getYear()) &&
+    bool sameDay =
+        (this->year == date.getYear()) &&
         (this->month == date.getMonth()) &&
         (this->day == date.getDay());
     if (!sameDay) {
@@ -104,9 +111,11 @@ bool Date::overlaps(Date& date) {
     } else {
         int diff = this->hour - date.getHour();
         if (diff < 0) {
-            return date.getDuration() > std::abs(diff);
+            // need to know if this->duration is longer than the diff
+            return getDuration() > std::abs(diff);
         } else {
-            return this->duration > diff;
+            // need to know that->duration is longer than the diff
+            return date.getDuration() > diff;
         }
     }
 }
@@ -117,7 +126,7 @@ void Date::print() {
     cout <<
         "[Date] " <<
         getMonthName() << " " << getDay() << ", " << getYear() <<
-        "(For " << getDuration() << " hours starting from " << getHour() << "h)" << endl;
+        " (For " << getDuration() << " hours starting from " << getHour() << "h)" << endl;
 }
 
 int Date::getMaxDay() {

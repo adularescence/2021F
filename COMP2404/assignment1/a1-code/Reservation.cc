@@ -12,9 +12,6 @@ Reservation::Reservation(Student *student, Room *room, Date& date) {
 }
 
 Reservation::~Reservation() {
-    this->student = NULL;
-    this->room = NULL;
-    this->date = NULL;
 }
 
 
@@ -43,10 +40,10 @@ void Reservation::print() {
     //     [Student] $name ($number)
     //     [Room] $name ($capacity, $computers, $hasWhiteboard)
     //     [Date] $monthName $day, $year (For $duration hours starting from ${hour}h)
-    std::cout << "[Reservation" << std::endl << '\t';
+    std::cout << "[Reservation]" << std::endl << "    ";
     getStudent().print();
-    std::cout << '\t';
+    std::cout << "    ";
     getRoom().print();
-    std::cout << '\t';
+    std::cout << "    ";
     getDate().print();
 }
