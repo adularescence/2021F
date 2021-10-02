@@ -16,6 +16,7 @@ class Library {
         bool getRoom(const string& roomName, Room **room);
         bool isFree(const string& room, Date& date);
         bool makeReservation(const string& student, const string& room, Date& date);
+        void update(Date& date);
 
         void printReservations();
 

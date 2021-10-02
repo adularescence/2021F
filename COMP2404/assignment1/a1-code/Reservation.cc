@@ -12,6 +12,8 @@ Reservation::Reservation(Student *student, Room *room, Date& date) {
 }
 
 Reservation::~Reservation() {
+    // not necessary to do anything
+    // because the pointers are accessible and still used elsewhere (Library)
 }
 
 

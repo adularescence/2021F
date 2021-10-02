@@ -12,14 +12,17 @@ Library::Library() {
 }
 
 Library::~Library() {
+    // delete each pointer, then the array pointer
     for (int i = 0; i < this->studentCount; ++i) {
         delete(this->students[i]);
     }
     delete[](this->students);
+
     for (int i = 0; i < this->roomCount; ++i) {
         delete(this->rooms[i]);
     }
     delete[](this->rooms);
+
     for (int i = 0; i < this->reservationCount; ++i) {
         delete(this->reservations[i]);
     }
@@ -28,6 +31,7 @@ Library::~Library() {
 
 bool Library::addStudent(const string& name, const string& number) {
     if (this->studentCount < MAX_COUNT) {
+        // studentCount indexes students at the first unused pointer
         this->students[this->studentCount] = new Student(name, number);
         ++this->studentCount;
         return true;
@@ -38,6 +42,7 @@ bool Library::addStudent(const string& name, const string& number) {
 
 bool Library::addRoom(const string& name, const int& capacity, const int& computers, const bool& hasWhiteboard) {
     if (this->roomCount < MAX_COUNT) {
+        // roomCount indexes rooms at the first unused pointer
         this->rooms[this->roomCount] = new Room(name, capacity, computers, hasWhiteboard);
         ++this->roomCount;
         return true;
@@ -59,7 +64,6 @@ bool Library::getStudent(const string& name, Student **student) {
 bool Library::getRoom(const string& roomName, Room **room) {
     for (int i = 0; i < this->roomCount; ++i) {
         if ((*this->rooms[i]).getName() == roomName) {
-            Room *r = this->rooms[i];
             *room = this->rooms[i];
             return true;
         }
@@ -89,17 +93,40 @@ bool Library::makeReservation(const string& student, const string& room, Date& d
     if (this->reservationCount < MAX_COUNT) {
         Student *registree;
         Room *targetRoom;
+
         bool studentExists = getStudent(student, &registree);
         bool roomExists = getRoom(room, &targetRoom);
         bool roomIsFree = isFree(room, date);
+
         if (studentExists && roomExists && roomIsFree) {
             this->reservations[this->reservationCount] = new Reservation(registree, targetRoom, date);
             ++this->reservationCount;
+            return true;
         } else {
             return false;
         }
     }
     return false;
+}
+
+void Library::update(Date& date) {
+    int updatedListIndex = 0;
+    int updatedReservationCount = reservationCount;
+    Reservation **updatedList = new Reservation*[MAX_COUNT];
+
+    for (int i = 0; i < this->reservationCount; ++i) {
+        if ((*this->reservations[i]).getDate().lessThan(date)) {
+            delete(this->reservations[i]);
+            --updatedReservationCount;
+        } else {
+            updatedList[updatedListIndex] = this->reservations[i];
+            ++updatedListIndex;
+        }
+    }
+
+    delete[] this->reservations;
+    this->reservations = updatedList;
+    this->reservationCount = updatedReservationCount;
 }
 
 void Library::printReservations() {
