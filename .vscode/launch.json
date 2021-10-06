@@ -8,7 +8,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/COMP2404/assignment1/a1-code/a1",
+            "program": "${workspaceFolder}/COMP2404/tutorial4/tutorial4/test",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
