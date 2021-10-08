@@ -1,6 +1,6 @@
 #include "Network.h"
 
-Network::Network(std::string& name) {
+Network::Network(std::string name) {
     this->name = name;
     podArray = new PodArray();
     numSubs = 0;
@@ -54,7 +54,7 @@ bool Network::addSubscriber(std::string& name, std::string& creditcard) {
     return false;
 }
 
-bool Network::download(std::string& subscriberName, std::string& podcastTitle, Podcast** pod) {
+bool Network::download(std::string subscriberName, std::string podcastTitle, Podcast** pod) {
     if (hasSubscriber(subscriberName)) {
         if (podArray->getPodcast(podcastTitle, pod)) {
             return true;
@@ -68,7 +68,7 @@ bool Network::download(std::string& subscriberName, std::string& podcastTitle, P
     }
 }
 
-bool Network::stream(std::string& subscriberName, std::string& podcastTitle, int& episodeNum, Episode** ep) {
+bool Network::stream(std::string subscriberName, std::string podcastTitle, int episodeNum, Episode** ep) {
     if (hasSubscriber(subscriberName)) {
         Podcast* podcastTarget;
         if (podArray->getPodcast(podcastTitle, &podcastTarget)) {

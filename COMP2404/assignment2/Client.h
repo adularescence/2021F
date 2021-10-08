@@ -15,7 +15,7 @@ class Client {
 
         void download(Network* network, std::string& podcastTitle);
         void stream(Network* network, std::string& podcastTitle, int& episodeNum);
-        void playLocal(std::string& podcastTitle, int& episodeNum);
+        void playLocal(std::string& podcastTitle, int episodeNum);
         void print();
 
     private:

@@ -8,7 +8,7 @@
 
 class Network {
     public:
-        Network(std::string& name);
+        Network(std::string name);
         ~Network();
 
         // get
@@ -22,8 +22,8 @@ class Network {
         bool addSubscriber(std::string& name, std::string& creditcard);
 
         // Client services
-        bool download(std::string& subscriberName, std::string& podcastTitle, Podcast** pod);
-        bool stream(std::string& subscriberName, std::string& podcastTitle, int& episodeNum, Episode** ep);
+        bool download(std::string subscriberName, std::string podcastTitle, Podcast** pod);
+        bool stream(std::string subscriberName, std::string podcastTitle, int episodeNum, Episode** ep);
 
         // other?
         bool hasSubscriber(std::string& name);

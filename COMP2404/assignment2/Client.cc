@@ -30,7 +30,7 @@ void Client::stream(Network* network, std::string& podcastTitle, int& episodeNum
     }
 }
 
-void Client::playLocal(std::string& podcastTitle, int& episodeNum) {
+void Client::playLocal(std::string& podcastTitle, int episodeNum) {
     Podcast* podcastTarget;
     if (podArray->getPodcast(podcastTitle, &podcastTarget)) {
         Episode* episodeTarget;
