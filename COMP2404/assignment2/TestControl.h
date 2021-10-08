@@ -7,6 +7,8 @@
 #include "Network.h"
 #include "TestView.h"
 #include "Client.h"
+#include "Podcast.h"
+#include "PodArray.h"
 
 using namespace std;
 
@@ -28,11 +30,11 @@ class TestControl
     //helper function
     void initNetwork(Network*);
 
-    const static string titles[3];
-    const static string hosts[3];
-    const static string subs[3];
-    const static string creds[3];
-    const static string content[20];
+    static string titles[3];
+    static string hosts[3];
+    static string subs[3];
+    static string creds[3];
+    static string content[20];
 
 
     
