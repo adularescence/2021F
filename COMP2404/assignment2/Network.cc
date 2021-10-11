@@ -1,6 +1,6 @@
 #include "Network.h"
 
-Network::Network(std::string name) {
+Network::Network(const std::string& name) {
     this->name = name;
     podArray = new PodArray();
     numSubs = 0;
@@ -13,11 +13,11 @@ Network::~Network() {
     }
 }
 
-bool Network::getPodcast(std::string& podcastTitle, Podcast** pod) {
+bool Network::getPodcast(const std::string& podcastTitle, Podcast** pod) {
     return podArray->getPodcast(podcastTitle, pod);
 }
 
-bool Network::getSubscriber(std::string& name, Subscriber** sub) {
+bool Network::getSubscriber(const std::string& name, Subscriber** sub) {
     for (int i = 0; i < numSubs; ++i) {
         if (subscribers[i]->matches(name)) {
             *sub = subscribers[i];
@@ -27,16 +27,16 @@ bool Network::getSubscriber(std::string& name, Subscriber** sub) {
     return false;
 }
 
-bool Network::addPodcast(std::string& podcastTitle, std::string& podcastHost) {
+bool Network::addPodcast(const std::string& podcastTitle, const std::string& podcastHost) {
     return podArray->addPodcast(new Podcast(podcastTitle, podcastHost));
 }
 
-bool Network::removePodcast(std::string& podcastTitle) {
+bool Network::removePodcast(const std::string& podcastTitle) {
     Podcast* placeholderPtr;
     return podArray->removePodcast(podcastTitle, &placeholderPtr);
 }
 
-bool Network::addEpisode(std::string& podcastTitle, std::string& episodeName, std::string& content) {
+bool Network::addEpisode(const std::string& podcastTitle, const std::string& episodeName, const std::string& content) {
     Podcast* targetPodcast;
     if (podArray->getPodcast(podcastTitle, &targetPodcast)) {
         return targetPodcast->addEpisode(episodeName, content);
@@ -45,7 +45,7 @@ bool Network::addEpisode(std::string& podcastTitle, std::string& episodeName, st
     }
 }
 
-bool Network::addSubscriber(std::string& name, std::string& creditcard) {
+bool Network::addSubscriber(const std::string& name, const std::string& creditcard) {
     if (numSubs < MAX_SUBS) {
         subscribers[numSubs] = new Subscriber(name, creditcard);
         ++numSubs;
@@ -54,7 +54,7 @@ bool Network::addSubscriber(std::string& name, std::string& creditcard) {
     return false;
 }
 
-bool Network::download(std::string subscriberName, std::string podcastTitle, Podcast** pod) {
+bool Network::download(const std::string& subscriberName, const std::string& podcastTitle, Podcast** pod) {
     if (hasSubscriber(subscriberName)) {
         if (podArray->getPodcast(podcastTitle, pod)) {
             return true;
@@ -68,7 +68,7 @@ bool Network::download(std::string subscriberName, std::string podcastTitle, Pod
     }
 }
 
-bool Network::stream(std::string subscriberName, std::string podcastTitle, int episodeNum, Episode** ep) {
+bool Network::stream(const std::string& subscriberName, const std::string& podcastTitle, int episodeNum, Episode** ep) {
     if (hasSubscriber(subscriberName)) {
         Podcast* podcastTarget;
         if (podArray->getPodcast(podcastTitle, &podcastTarget)) {
@@ -88,7 +88,7 @@ bool Network::stream(std::string subscriberName, std::string podcastTitle, int e
     }
 }
 
-bool Network::hasSubscriber(std::string& name) {
+bool Network::hasSubscriber(const std::string& name) {
     for (int i = 0; i < numSubs; ++i) {
         if (subscribers[i]->matches(name)) {
             return true;

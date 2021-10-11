@@ -9,7 +9,7 @@
 
 class Podcast {
     public:
-        Podcast(std::string title, std::string host);
+        Podcast(const std::string& title, const std::string& host);
         Podcast(Podcast& pod);
         ~Podcast();
 
@@ -17,7 +17,7 @@ class Podcast {
         std::string getHost() const;
         int getNumEpisodes() const;
 
-        bool addEpisode(std::string title, std::string content);
+        bool addEpisode(const std::string& title, const std::string& content);
         bool getEpisode(int index, Episode** ep);
         bool lessThan(Podcast& pod);
         void print();

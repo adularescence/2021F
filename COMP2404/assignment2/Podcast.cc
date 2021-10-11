@@ -1,6 +1,6 @@
 #include "Podcast.h"
 
-Podcast::Podcast(std::string title, std::string host) {
+Podcast::Podcast(const std::string& title, const std::string& host) {
     this->title = title;
     this->host = host;
     this->episodes = new Episode*[MAX_EPS];
@@ -38,7 +38,7 @@ int Podcast::getNumEpisodes() const {
     return this->numEps;
 }
 
-bool Podcast::addEpisode(std::string title, std::string content) {
+bool Podcast::addEpisode(const std::string& title, const std::string& content) {
     if (numEps < MAX_EPS) {
         episodes[numEps] = new Episode(this->title, numEps + 1, title, content);
         ++numEps;

@@ -8,25 +8,25 @@
 
 class Network {
     public:
-        Network(std::string name);
+        Network(const std::string& name);
         ~Network();
 
         // get
-        bool getPodcast(std::string& podcastTitle, Podcast** pod);
-        bool getSubscriber(std::string& name, Subscriber** sub);
+        bool getPodcast(const std::string& podcastTitle, Podcast** pod);
+        bool getSubscriber(const std::string& name, Subscriber** sub);
 
         // add, remove
-        bool addPodcast(std::string& podcastTitle, std::string& podcastHost);
-        bool removePodcast(std::string& podcastTitle);
-        bool addEpisode(std::string& podcastTitle, std::string& episodeName, std::string& content);
-        bool addSubscriber(std::string& name, std::string& creditcard);
+        bool addPodcast(const std::string& podcastTitle, const std::string& podcastHost);
+        bool removePodcast(const std::string& podcastTitle);
+        bool addEpisode(const std::string& podcastTitle, const std::string& episodeName, const std::string& content);
+        bool addSubscriber(const std::string& name, const std::string& creditcard);
 
         // Client services
-        bool download(std::string subscriberName, std::string podcastTitle, Podcast** pod);
-        bool stream(std::string subscriberName, std::string podcastTitle, int episodeNum, Episode** ep);
+        bool download(const std::string& subscriberName, const std::string& podcastTitle, Podcast** pod);
+        bool stream(const std::string& subscriberName, const std::string& podcastTitle, int episodeNum, Episode** ep);
 
         // other?
-        bool hasSubscriber(std::string& name);
+        bool hasSubscriber(const std::string& name);
         void print();
 
 

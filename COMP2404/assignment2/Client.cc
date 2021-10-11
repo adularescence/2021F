@@ -1,6 +1,6 @@
 #include "Client.h"
 
-Client::Client(std::string& name) {
+Client::Client(const std::string& name) {
     this->name = name;
     this->podArray = new PodArray();
 }
@@ -9,7 +9,7 @@ Client::~Client() {
     delete podArray;
 }
 
-void Client::download(Network* network, std::string& podcastTitle) {
+void Client::download(Network* network, const std::string& podcastTitle) {
     Podcast* target;
     // assume client->name is subscriber name
     if (network->download(name, podcastTitle, &target)) {
@@ -23,14 +23,14 @@ void Client::download(Network* network, std::string& podcastTitle) {
     }
 }
 
-void Client::stream(Network* network, std::string& podcastTitle, int& episodeNum) {
+void Client::stream(Network* network, const std::string& podcastTitle, int& episodeNum) {
     Episode* target;
     if (network->stream(name, podcastTitle, episodeNum, &target)) {
         target->play();
     }
 }
 
-void Client::playLocal(std::string& podcastTitle, int episodeNum) {
+void Client::playLocal(const std::string& podcastTitle, int episodeNum) {
     Podcast* podcastTarget;
     if (podArray->getPodcast(podcastTitle, &podcastTarget)) {
         Episode* episodeTarget;

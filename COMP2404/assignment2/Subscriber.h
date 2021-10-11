@@ -6,7 +6,7 @@
 
 class Subscriber {
     public:
-        Subscriber(std::string name, std::string creditcard);
+        Subscriber(const std::string& name, const std::string& creditcard);
 
         bool matches(const std::string& name);
         void print();

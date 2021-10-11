@@ -1,6 +1,6 @@
 #include "Subscriber.h"
 
-Subscriber::Subscriber(std::string name, std::string creditcard) {
+Subscriber::Subscriber(const std::string& name, const std::string& creditcard) {
     this->name = name;
     this->creditcard = creditcard;
 }
