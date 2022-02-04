@@ -1,0 +1,91 @@
+/* part2a */
+
+#part2a {
+    color: white;
+    padding: 2em;
+    margin: 2em;
+}
+
+#part2a-first {
+    display: inline;
+    background-color: cornflowerblue;
+    border: 1px solid black;
+    padding: 2em;
+    padding-bottom: 3em;
+    margin: 1em;
+    border-radius: 1em;
+}
+
+#part2a-second {
+    display: inline;
+    background-color: goldenrod;
+    border: 1px solid darkgoldenrod;
+    padding: 2em;
+    padding-bottom: 3em;
+    margin: 1em;
+    border-radius: 1em;
+}
+
+
+/* part2b */
+
+#part2b {
+    list-style: none;
+    width: 30%;
+    padding-left: 0px;
+}
+
+#part2b li {
+    padding: 1em;
+    font-size: larger;
+    font-weight: bold;
+}
+
+#part2b-pink {
+    background-color: deeppink;
+    color: white;
+}
+
+/* part 4 */
+
+#part4 {
+    background-color: turquoise;
+    font-family: Arial, Helvetica, sans-serif;
+    color: darkslateblue;
+}
+
+#shop {
+    margin: 1em;
+    border-radius: 1em;
+    padding: 1em;
+    background-color:darkslateblue;
+    width: 40%;
+}
+
+#items * {
+    margin: 1em;
+}
+
+#items h3 {
+    color: white;
+    display: inline;
+}
+
+#submit-button {
+    padding: 1em;
+    border-radius: 2em;
+    border: 1px solid black;
+}
+
+#cart {
+    border: none;
+    outline: none;
+    resize: none;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: gray;
+    border-radius: 1em;
+    padding: 1em;
+    margin: 1.5em;
+    width: 40%;
+}

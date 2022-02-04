@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <!-- Import the CSS files for this project -->
+        <link rel="stylesheet" href="t3.css">
+    </head>
+
+    <body>
+        <h1>Students in our class</h1>
+
+        <form action="javascript:processForm()">
+            Student ID: <input type="text" id="snum" name="snum" class="temp"><br><br>
+            First Name: <input type="text" id="fname" name="fname" class="temp"><br><br>
+            Last Name: <input type="text" id="lname" name="lname" class="temp"><br><br>
+            Assignment Grade: <input type="text" id="agrade" name="agrade" class="temp"><br><br>
+            Tutorial Grade: <input type="text" id="tgrade" name="tgrade" class="temp"><br><br>
+            Exam Grade: <input type="text" id="egrade" name="egrade" class="temp"><br><br>
+            <input type="submit" disabled="true" id="btnSubmit" value="Submit" class="temp">
+        </form>
+
+        <table>
+            <tr>
+                <th>Student ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Assignment grade</th>
+                <th>Tutorial grade</th>
+                <th>Exam grade</th>
+            </tr>
+        </table>
+
+    </body>
+
+    <!-- Import the JavaScript files for this project -->
+    <script type="text/javascript" src="students.js" ></script>
+    <script type="text/javascript" src="t3.js" ></script>
+</html>
