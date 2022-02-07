@@ -4,7 +4,11 @@ let pickup_items = {};
 let filters = [];
 
 
+
+
 // methods to create a page
+
+// creates the main page
 const create_main_page = () => {
     wipe();
 
@@ -48,6 +52,7 @@ const create_main_page = () => {
     });
 };
 
+// creates the fridge selection pages
 const create_choose_fridge = () => {
     wipe();
     display_menu_button();
@@ -63,6 +68,7 @@ const create_choose_fridge = () => {
     h1.innerHTML = titleText;
     body.appendChild(h1);
 
+    // buttons for the fridges with contact info and an image
     const fridge_ids = fridges.map((fridge) => fridge.name.replaceAll(" ", "-"));
     for (let i = 0; i < fridge_ids.length; i++) {
         const fridge = fridges[i];
@@ -85,6 +91,7 @@ const create_choose_fridge = () => {
     };
 };
 
+// creates the fridge content's page
 const create_fridge_contents = (event) => {
     wipe();
     display_menu_button();
@@ -103,6 +110,7 @@ const create_fridge_contents = (event) => {
 
     const items_in_the_fridge_div = document.createElement("div");
 
+    // create 3 divs, so that they may be styled with flex
     // fridge metadata
     const fridge_metadata_div = document.createElement("div");
     fridge_metadata_div.id = "fridge-metadata"
@@ -125,7 +133,11 @@ const create_fridge_contents = (event) => {
 };
 
 
+
+
 // helper methods
+
+// wipes the page
 const wipe = () => {
     while (body.lastElementChild) {
         body.removeChild(body.lastElementChild);
@@ -136,10 +148,14 @@ const wipe = () => {
     filters = [];
 };
 
+// toggles the menu button's visibility
 const display_menu_button = () => {
     menu_button.classList.remove("hide");
 };
 
+// appends selected fridge's metadata elements to the parent
+// contact info, capacity, filters
+// parent: a div
 const create_fridge_metadata = (parent, selected_fridge) => {
     const fridge_metadata_h2 = document.createElement("h2");
     fridge_metadata_h2.innerHTML = selected_fridge.name;
@@ -174,28 +190,38 @@ const create_fridge_metadata = (parent, selected_fridge) => {
         const filter_li = document.createElement("li");
         const filter_item_count = Object.values(selected_fridge.items).filter((item) => item.type === filter).length;
         filter_li.innerHTML = `${filter.charAt(0).toUpperCase()}${filter.substring(1).toLowerCase()} (${filter_item_count})`;
-        filter_li.addEventListener("click", (event) => {
-            // purge contents list
-            contents_div.childNodes[0].remove();
 
-            // if unselecting a filter
-            const current_filter = Object.values(event.target.parentNode.childNodes).filter((li) => li.classList.contains("filtered"));
-            if (current_filter.length !== 0) {
-                current_filter[0].classList.remove("filtered");
-                if (current_filter[0] === event.target) {
-                    create_contents_list(contents_div, Object.values(selected_fridge.items));
-                    return;
+        // Part 3.3.d [display] A hover effect should be applied to each element in the left menu.
+        // Part 3.3.f [interaction] Clicking on a category with 0 items should not do anything.
+        // why even let the ones with 0 items have a hover effect when you can't even select them
+        // bad ui design
+        // but I must code to the requirements
+        if (filter_item_count !== 0) {
+            filter_li.addEventListener("click", (event) => {
+                // purge contents list
+                contents_div.childNodes[0].remove();
+    
+                // if unselecting a filter
+                const current_filter = Object.values(event.target.parentNode.childNodes).filter((li) => li.classList.contains("filtered"));
+                if (current_filter.length !== 0) {
+                    current_filter[0].classList.remove("filtered");
+                    if (current_filter[0] === event.target) {
+                        create_contents_list(contents_div, Object.values(selected_fridge.items));
+                        return;
+                    }
                 }
-            }
-            event.target.classList.add("filtered");
-
-            // get clicked filter's name
-            const target_textContent = event.target.textContent;
-            const desired_filter = target_textContent.substring(0, target_textContent.indexOf(" ")).toLowerCase();
-
-            // recreate contents list
-            create_contents_list(contents_div, Object.values(selected_fridge.items), desired_filter);
-        });
+                event.target.classList.add("filtered");
+    
+                // get clicked filter's name
+                const target_textContent = event.target.textContent;
+                const desired_filter = target_textContent.substring(0, target_textContent.lastIndexOf(" ")).toLowerCase();
+    
+                // recreate contents list
+                create_contents_list(contents_div, Object.values(selected_fridge.items), desired_filter);
+            });
+        }
+        
+        // hover effect for filters
         filter_li.addEventListener("mouseenter", (event) => event.target.classList.add("mouseenter"));
         filter_li.addEventListener("mouseleave", (event) => event.target.classList.remove("mouseenter"));
         filter_ul.appendChild(filter_li);
@@ -203,17 +229,23 @@ const create_fridge_metadata = (parent, selected_fridge) => {
     parent.appendChild(filter_ul);
 };
 
-// parent: ul, ol
+// appends items' metadata elements to parent
+// name, quantity, pickup buttons
+// parent: a div
 // items: items object of a fridge object
 // filter: select * where type = filter
 const create_contents_list = (parent, items, filter = null) => {
+    // filter items
     if (filter !== null) {
         items = items.filter((item) => item.type === filter);
     }
+
+    // create the list
     const contents_ul = document.createElement("ul");
     items.forEach((item) => {
         const item_li = document.createElement("li");
 
+        // need a div for Part 3.4.b
         const img_div = document.createElement("div");
         img_div.id = "img-div";
 
@@ -223,11 +255,13 @@ const create_contents_list = (parent, items, filter = null) => {
         img_div.appendChild(img);
         item_li.appendChild(img_div);
 
+        // need a div for Part 3.4.b
         const item_metadata_ul_wrapper_div = document.createElement("div");
         item_metadata_ul_wrapper_div.id = "item-metadata-div";
         const item_metadata_ul = document.createElement("ul");
         item_metadata_ul_wrapper_div.appendChild(item_metadata_ul);
         item_li.appendChild(item_metadata_ul_wrapper_div);
+
         // name
         const metadata_name_li = document.createElement("li");
         metadata_name_li.innerHTML = item.name;
@@ -271,28 +305,33 @@ const create_contents_list = (parent, items, filter = null) => {
         contents_ul.appendChild(item_li);
     });
 
+    // add class for CSS rule that adds lines between li elements
     const item_count = contents_ul.childNodes.length;
-    if (item_count === 0 && filter !== null) {
-        const nothing_li = document.createElement("li");
-        nothing_li.innerHTML = `There are no ${filter} items.`;
-        contents_ul.appendChild(nothing_li);
-    } else if (item_count > 0) {
+    if (item_count > 0) {
         for (let i = 0; i < item_count - 1; i++) {
             contents_ul.childNodes[i].classList.add("not-last");
         }
         contents_ul.childNodes[item_count - 1].classList.add("last");
     }
+
     parent.append(contents_ul);
 };
 
+// appends pickup list to parent
+// parent: a div
 const create_pickup_list = (parent) => {
     const text = document.createElement("h3");
     text.innerHTML = "You have picked up the following items:";
     parent.append(text);
 };
 
+// callback for the +- buttons for each item
+// ensures that the quantities are respected and then updates the "cart" accordingly
 const modify_cart = (event) => {
+    // determine if source is increment/decrement
     const increment = event.target.classList[0] === "pickup-increment-button";
+
+    // determine 
     const item_name = event.target.parentNode.parentNode.childNodes[0].textContent;
     const pickup_quantity_elem = event.target.parentNode.querySelector("textarea");
     const max_pickup = parseInt(Object.values(event.target.parentNode.parentNode.childNodes).filter((elem) => elem.textContent.match(/^Quantity: \d$/) !== null)[0].textContent.slice(-1));
@@ -315,6 +354,8 @@ const modify_cart = (event) => {
         }
     });
 };
+
+
 
 
 // 'main' method
