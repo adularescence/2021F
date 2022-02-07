@@ -1,0 +1,190 @@
+/* Generic */
+* {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body button {
+    padding: 1em;
+    margin: 1em;
+    border-radius: 1em;
+    color: #9B489B;
+    background-color: #82FF9E;
+    border: solid 2px #9B489B;
+}
+
+body {
+    background-color: #B594B6;
+    text-align: center;
+}
+
+body h1 {
+    color: #9B489B;
+}
+
+.mouseenter {
+    font-weight: bold;
+    color: black;
+}
+
+
+/* Choose Fridge */
+#choose-fridge img {
+    height: 10em;
+}
+
+#choose-fridge button {
+    width: 15em;
+}
+
+
+/* Items in the X fridge */
+#fridge-contents > div {
+    display: flex;
+}
+
+#fridge-contents > h1 {
+    display: block;
+}
+
+#fridge-metadata {
+    height: 100%;
+    width: 30%;
+    display: inline-block;
+    background-color: #82FF9E;
+    padding: 2em;
+    border-radius: 2em;
+    border: solid 2px #9B489B;
+    margin: 0.5em;
+}
+
+#fridge-metadata > #capacity {
+    background-color: #9B489B;
+    border-top-left-radius: 0.5em;
+    border-bottom-left-radius: 0.5em;
+}
+
+#fridge-metadata p {
+    text-align: left;
+}
+
+#fridge-metadata > ul {
+    border-top: solid 1px black;
+    padding: 0;
+    margin-top: 1em;
+}
+
+#fridge-metadata > ul > li {
+    padding: 0.25em;
+}
+
+#contents {
+    height: 100%;
+    width: 40%;
+    display: inline-block;
+    background-color: #A9FBC3;
+    padding: 2em;
+    border-radius: 2em;
+    border: solid 2px #9B489B;
+    margin: 0.5em;
+}
+
+#contents > img {
+    display: flex;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+}
+
+#contents > ul > li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+}
+
+#contents > ul > li {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.last {
+    border-bottom: unset;
+}
+
+.not-last {
+    border-bottom: solid 1px black;
+}
+
+#contents > ul > li > div {
+    display: flex;
+    margin: 1em;
+}
+
+#img-div {
+    height: 100%;
+    width: 40%;
+}
+
+#item-metadata-div {
+    height: 100%;
+    width: 60%;
+}
+
+#item-metadata-div > ul > li > button {
+    margin: 0.25em;
+    padding: 0.25em;
+}
+
+#pickup-list {
+    height: 100%;
+    width: 30%;
+    display: inline-block;
+    background-color: #935FA7;
+    border-radius: 2em;
+    border: solid 2px #82FF9E;
+    margin: 0.5em;
+}
+
+#pickup-list > p {
+    background-color: #A9FBC3;
+    border-radius: 2em;
+}
+
+li {
+    list-style: none;
+    text-align: left;
+}
+
+.filtered {
+    font-weight: bold;
+    color: white;
+}
+
+
+/* Menu Button */
+#menu-button {
+    all: unset;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#menu-button i {
+    font-size: 2em;
+    user-select: none;
+}
+
+#menu-button .hide {
+    display: none;
+}
+
+/* 
+#82FF9E
+#A9FBC3
+#B594B6
+#935FA7
+#9B489B
+ */
