@@ -9,7 +9,7 @@ let vaccines = {};
 // specifies what should happen when the window of the browser loads
 window.onload = () => {
     // call the requestData function to perform an AJAX request to retrieve data from the URL provided
-    requestData("https://opendata.arcgis.com/datasets/1388ee1b929c4858a47b2fb8c73b0939_0.geojson");
+    requestData("https://opendata.arcgis.com/datasets/691e786f545349c6a4f23341ddfcad41_0.geojson");
 };
 
 // sends a request to the server to retrieve the data from the specified URL
@@ -36,10 +36,10 @@ const loadCovidData = () => {
         // iterate over the all the rows in the features object to populate the vaccines object defined at the top of this file. Review the prototype of the object above to get an understanding of how to populate it
         features.forEach((feature) => {
             const props = feature.properties;
-            if (!(props.Vaccine_Type in vaccines)) {
+            if (!(props.Type_of_Vaccine in vaccines)) {
                 // probably ok to use today's date as the first_date (to compare against)
                 const today = new Date();
-                vaccines[`${props.Vaccine_Type}`] = {
+                vaccines[`${props.Type_of_Vaccine}`] = {
                     doses: 0,
                     first_date: today.toString(),
                     last_date: null,
@@ -48,23 +48,23 @@ const loadCovidData = () => {
                 };
             }
             // increment doses
-            vaccines[`${props.Vaccine_Type}`].doses += props.Doses_Received;
+            vaccines[`${props.Type_of_Vaccine}`].doses += props.Number_of_doses_administered_in;
 
             //check if new first date
             const featureDate = new Date(props.Date);
-            if (featureDate < new Date(vaccines[`${props.Vaccine_Type}`].first_date)) {
-                vaccines[`${props.Vaccine_Type}`].first_date = formatDate(featureDate);
+            if (featureDate < new Date(vaccines[`${props.Type_of_Vaccine}`].first_date)) {
+                vaccines[`${props.Type_of_Vaccine}`].first_date = formatDate(featureDate);
             }
 
             // check if new last date
-            if (featureDate > new Date(vaccines[`${props.Vaccine_Type}`].last_date)) {
-                vaccines[`${props.Vaccine_Type}`].last_date = formatDate(featureDate);
+            if (featureDate > new Date(vaccines[`${props.Type_of_Vaccine}`].last_date)) {
+                vaccines[`${props.Type_of_Vaccine}`].last_date = formatDate(featureDate);
             }
 
             // check if new most doses
-            if (props.Doses_Received > vaccines[`${props.Vaccine_Type}`].most_amount) {
-                vaccines[`${props.Vaccine_Type}`].most_amount = props.Doses_Received;
-                vaccines[`${props.Vaccine_Type}`].most_date = formatDate(featureDate);
+            if (props.Number_of_doses_administered_in > vaccines[`${props.Type_of_Vaccine}`].most_amount) {
+                vaccines[`${props.Type_of_Vaccine}`].most_amount = props.Number_of_doses_administered_in;
+                vaccines[`${props.Type_of_Vaccine}`].most_date = formatDate(featureDate);
             }
         });
 
@@ -82,12 +82,13 @@ const createContent = () => {
 
     Object.keys(vaccines).forEach((vaccine) => {
         const inputElem = document.createElement("input");
+        
         inputElem.setAttribute("type", "radio");
-        inputElem.name = "vaccine-info";
         inputElem.addEventListener("click", showResults);
+        inputElem.name = "vaccine-radio"
 
         const label = document.createElement("label");
-        label.textContent = vaccine;
+        label.innerHTML = `${vaccine}<br>`;
         switch (vaccine) {
             case "AstraZeneca":
                 inputElem.id = "az";
