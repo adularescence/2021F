@@ -1,0 +1,39 @@
+/* General styles */
+
+body {
+    margin-left: 10%;
+}
+
+form {
+    display: inline-block;
+    float: left;
+}
+
+.valid {
+    background-color: limegreen;
+}
+
+.invalid {
+    background-color: red;
+}
+
+/* Styles for the table */
+table {
+    background-color: #eeeeee;
+    color: white;
+}
+
+table td {
+    padding: 0.5em;
+    color: black;
+    text-align: center;
+}
+table th {
+    background-color: #027d79;
+    padding : 0.5em;
+    font-size: large;
+}
+
+/* TODO: Styles for the form */
+
+/* TODO:  Styles for error checking */
