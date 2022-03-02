@@ -1,0 +1,57 @@
+[
+    {
+        "name": "Almond milk",
+        "type": "dairy",
+        "img": "http://localhost:8000/images/dairy/almond_milk.jpeg"
+    },
+    {
+        "name": "Salted butter",
+        "type": "dairy",
+        "img": "http://localhost:8000/images/dairy/salted_butter.jpeg"
+    },
+    {
+        "name": "Grapes",
+        "type": "produce",
+        "img": "http://localhost:8000/images/produce/grapes.jpeg"
+    },
+    {
+        "name": "Apples",
+        "type": "produce",
+        "img": "http://localhost:8000/images/produce/apples.jpeg"
+    },
+    {
+        "name": "Bananas",
+        "type": "produce",
+        "img": "http://localhost:8000/images/produce/bananas.jpeg"
+    },
+    {
+        "name": "Spinach",
+        "type": "produce",
+        "img": "http://localhost:8000/images/produce/spinach.jpeg"
+    },
+    {
+        "name": "Lettuce",
+        "type": "produce",
+        "img": "http://localhost:8000/images/produce/lettuce.jpeg"
+    },
+    {
+        "name": "Cauliflower",
+        "type": "produce",
+        "img": "http://localhost:8000/images/produce/cauliflower.jpeg"
+    },
+    {
+        "name": "Cheerios",
+        "type": "pantry",
+        "img": "http://localhost:8000/images/pantry/cheerios.jpeg"
+    },
+    {
+        "name": "Crackers",
+        "type": "pantry",
+        "img": "http://localhost:8000/images/pantry/crackers.jpeg"
+    },
+    {
+        "name": "Bababa",
+        "type": "pantry",
+        "img": "http://localhost:8000/images/pantry/crackers.jpeg"
+    }
+]
