@@ -595,8 +595,21 @@ const update_fridge = (event) => {
             getXhttp.onreadystatechange = () => {
                 if (getXhttp.readyState === XMLHttpRequest.DONE && getXhttp.status === 200) {
                     fridges = JSON.parse(getXhttp.responseText);
-                    // TODO: don't use alert
-                    alert("The item has been successfully added to the fridge!");
+                    const notification = document.createElement("p");
+                    notification.style.opacity = 1;
+                    notification.id = "found-fridges-notification";
+                    notification.innerHTML = `The item has been successfully added to the ${payload.fridge}!`;
+                    const htmlTag = document.querySelector("html");
+                    htmlTag.appendChild(notification);
+                    setTimeout(() => {
+                        const fadeEffect = setInterval(() => notification.style.opacity -= 0.01, 10);
+                        setTimeout(() => {
+                            notification.remove();
+                            clearInterval(fadeEffect);
+                        }, 2000);
+                    }, 2000);
+                    // // TODO: don't use alert
+                    // alert("The item has been successfully added to the fridge!");
                     create_drop_off_page();
                 }
             };

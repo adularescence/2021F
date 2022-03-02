@@ -144,9 +144,17 @@ const updateFridge = (payload, response) => {
             throw readErr;
         }
         const commFridgeDataJSON = JSON.parse(data.toString());
-        console.log(payload.fridge)
+        // commFridgeDataJSON.forEach((fridge) => {
+        //     if (fridge.name === payload.fridge) {
+        //         fridge.items.forEach((item) => {
+        //             if (item.name === payload.item) {
+
+        //             }
+        //         });
+        //     }
+        // });
         const targetFridge = commFridgeDataJSON.filter((fridge) => fridge.name === payload.fridge)[0];
-        const targetItem = targetFridge.items.filter((item) => item.name === payload.item);
+        const targetItem = targetFridge.items.filter((item) => item.name === payload.item)[0]
 
         targetFridge.num_items_accepted += payload.quantity;
         targetFridge.can_accept_items -= payload.quantity;
