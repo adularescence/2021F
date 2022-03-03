@@ -1,13 +1,15 @@
 // 'global' elements
-let title, body, menu_button, contents_div, pickup_list_div, drop_off_submit;
+let title, body, menu_button, contents_div, pickup_list_div, drop_off_submit, add_item_submit;
 let pickup_items = {};
 let filters = [];
 let fridges = [];
 let availableItems = [];
 let validSelectedItem, validNumberOfItems;
+let validNewItemName, validNewItemType, validNewItemImage;
 let dropOffObject = {
     name: "",
-    number: -1
+    number: -1,
+    img: ""
 };
 
 
@@ -47,14 +49,25 @@ const create_main_page = () => {
         switch (id) {
             case "pick-up":
                 callback = () => {
-                    const xhttp = new XMLHttpRequest();
-                    xhttp.open("GET", "http://localhost:8000/comm-fridge-data.json", true);
-                    xhttp.send();
-                    xhttp.onreadystatechange = () => {
-                        if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) {
-                            const data = xhttp.responseText;
-                            fridges = JSON.parse(data);
-                            create_choose_fridge();
+                    const getFridgeDataXhttp = new XMLHttpRequest();
+                    getFridgeDataXhttp.open("GET", "http://localhost:8000/comm-fridge-data.json", true);
+                    getFridgeDataXhttp.send();
+                    getFridgeDataXhttp.onreadystatechange = () => {
+                        if (getFridgeDataXhttp.readyState === XMLHttpRequest.DONE && getFridgeDataXhttp.status === 200) {
+                            const fridgeData = getFridgeDataXhttp.responseText;
+                            fridges = JSON.parse(fridgeData);
+                            
+                            const getFridgeItemsXhttp = new XMLHttpRequest();
+                            getFridgeItemsXhttp.open("GET", "http://localhost:8000/comm-fridge-items.json", true);
+                            getFridgeItemsXhttp.send();
+                            getFridgeItemsXhttp.onreadystatechange = () => {
+                                if (getFridgeItemsXhttp.readyState === XMLHttpRequest.DONE && getFridgeItemsXhttp.status === 200) {
+                                    const fridgeItems = getFridgeItemsXhttp.responseText;
+                                    availableItems = JSON.parse(fridgeItems);
+
+                                    create_choose_fridge();
+                                }
+                            };
                         }
                     };
                 };
@@ -188,6 +201,7 @@ const create_drop_off_page = () => {
 
     const grocery_item_label = document.createElement("label");
     grocery_item_label.innerHTML = "Choose an item:";
+    grocery_item_label.for = "grocery-item-select";
     const grocery_item_select = document.createElement("select");
     grocery_item_select.id = "grocery-item-select";
     grocery_item_select.addEventListener("change", check_drop_off);
@@ -205,10 +219,19 @@ const create_drop_off_page = () => {
     form.appendChild(grocery_item_label);
     form.appendChild(grocery_item_select);
     form.appendChild(document.createElement("br"));
+
+    const add_item_button = document.createElement("button");
+    add_item_button.innerHTML = "Add an item";
+    add_item_button.addEventListener("click", create_add_item_page);
+    add_item_button.addEventListener("mouseenter", (event) => event.target.classList.add("mouseenter"));
+    add_item_button.addEventListener("mouseleave", (event) => event.target.classList.remove("mouseenter"));
+    form.appendChild(add_item_button);
+    form.appendChild(document.createElement("br"));
     form.appendChild(document.createElement("br"));
 
     const number_items_label = document.createElement("label");
     number_items_label.innerHTML = "Number of items:";
+    number_items_label.for = "number-items-input";
     const number_items_input = document.createElement("input");
     number_items_input.type = "text";
     number_items_input.id = "number-items-input";
@@ -233,6 +256,124 @@ const create_drop_off_page = () => {
     });
     drop_off_submit.addEventListener("click", find_fridges);
     form.appendChild(drop_off_submit);
+};
+
+// creates the add item page
+const create_add_item_page = () => {
+    wipe();
+    display_menu_button();
+
+    const titleText = "Add an item";
+    title.text = titleText;
+
+    body.id = "add-an-item";
+
+    const section = document.createElement("section");
+    body.appendChild(section);
+
+    const h1 = document.createElement("h1");
+    h1.innerHTML = titleText;
+    section.appendChild(h1);
+
+    const form = document.createElement("form");
+    section.appendChild(form);
+
+    const name_label = document.createElement("label");
+    name_label.innerHTML = "Name: ";
+    name_label.for = "name-input";
+    const name_input = document.createElement("input");
+    name_input.type = "text";
+    name_input.id = "name-input";
+    name_input.addEventListener("input", check_add_item_fields);
+    form.appendChild(name_label);
+    form.appendChild(name_input);
+    form.appendChild(document.createElement("br"));
+    form.appendChild(document.createElement("br"));
+
+    const type_label = document.createElement("label");
+    type_label.innerHTML = "Type: ";
+    type_label.for = "type-input";
+    const type_input = document.createElement("input");
+    type_input.type = "text";
+    type_input.id = "type-input";
+    type_input.addEventListener("input", check_add_item_fields);
+    form.appendChild(type_label);
+    form.appendChild(type_input);
+    form.appendChild(document.createElement("br"));
+    form.appendChild(document.createElement("br"));
+
+    const image_label = document.createElement("label");
+    image_label.innerHTML = "Image: ";
+    image_label.for = "image-input";
+    const image_input = document.createElement("input");
+    image_input.type = "file";
+    image_input.accept = "image/jpeg, image/png";
+    image_input.id = "image-input";
+    image_input.addEventListener("input", check_add_item_fields);
+    form.appendChild(image_label);
+    form.appendChild(image_input);
+
+    add_item_submit = document.createElement("button");
+    add_item_submit.innerHTML = "Add item";
+    add_item_submit.disabled = true;
+    add_item_submit.addEventListener("mouseenter", (event) => {
+        if (!event.target.disabled) {
+            event.target.classList.add("mouseenter");
+        }
+    });
+    add_item_submit.addEventListener("mouseleave", (event) => {
+        if (!event.target.disabled) {
+            event.target.classList.remove("mouseenter");
+        }
+    });
+    add_item_submit.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const image = image_input.files[0];
+        const filetype = image.type.slice(image.type.indexOf("/") + 1);
+        const filename = `/images/${type_input.value}/${name_input.value}.${filetype}`;
+
+        const base64Reader = new FileReader();
+        base64Reader.readAsDataURL(image);
+
+        let base64 = "";
+        base64Reader.onload = () => {
+            base64 += base64Reader.result;
+        };
+        base64Reader.onerror = (error) => console.log(`Error: ${error}`);
+        base64Reader.onloadend = () => {
+            const payload = {
+                name: name_input.value,
+                type: type_input.value,
+                path: filename,
+                data: base64
+            };
+
+            const postXhttp = new XMLHttpRequest();
+            postXhttp.open("POST", "http://localhost:8000/newItem", true);
+            postXhttp.setRequestHeader("Content-Type", 'application/json');
+            postXhttp.send(JSON.stringify(payload));
+            postXhttp.onreadystatechange = () => {
+                if (postXhttp.readyState === XMLHttpRequest.DONE && postXhttp.status === 201) {
+                    // on success retrieve newer data
+                    const getXhttp = new XMLHttpRequest();
+                    getXhttp.open("GET", "http://localhost:8000/comm-fridge-items.json", true);
+                    getXhttp.send();
+                    getXhttp.onreadystatechange = () => {
+                        if (getXhttp.readyState === XMLHttpRequest.DONE && getXhttp.status === 200) {
+                            // on success create the success notification
+                            availableItems = JSON.parse(getXhttp.responseText);
+                            show_notification(`${name_input.value} was successfully added to the items list!`);
+
+                            // i guess it's best to recreate the page at this point
+                            create_drop_off_page();
+                        }
+                    };
+                }
+            }
+        };
+    });
+    form.appendChild(add_item_submit);
 };
 
 
@@ -289,16 +430,13 @@ const create_fridge_metadata = (parent, selected_fridge) => {
 
     const filter_ul = document.createElement("ul");
     filter_ul.id = "filter";
-    ["produce", "dairy", "bakery", "frozen", "pantry", "meat and seafood"].forEach((filter) => {
+
+    const availableFilters = new Set(availableItems.map((item) => item.type));
+    availableFilters.forEach((filter) => {
         const filter_li = document.createElement("li");
         const filter_item_count = Object.values(selected_fridge.items).filter((item) => item.type === filter).length;
         filter_li.innerHTML = `${filter.charAt(0).toUpperCase()}${filter.substring(1).toLowerCase()} (${filter_item_count})`;
 
-        // Part 3.3.d [display] A hover effect should be applied to each element in the left menu.
-        // Part 3.3.f [interaction] Clicking on a category with 0 items should not do anything.
-        // why even let the ones with 0 items have a hover effect when you can't even select them
-        // bad ui design
-        // but I must code to the requirements
         if (filter_item_count !== 0) {
             filter_li.addEventListener("click", (event) => {
                 // purge contents list
@@ -434,10 +572,11 @@ const modify_cart = (event) => {
     // determine if source is increment/decrement
     const increment = event.target.classList[0] === "pickup-increment-button";
 
-    // determine 
+    // determine available quantity for item
     const item_name = event.target.parentNode.parentNode.childNodes[0].textContent;
     const pickup_quantity_elem = event.target.parentNode.querySelector("textarea");
-    const max_pickup = parseInt(Object.values(event.target.parentNode.parentNode.childNodes).filter((elem) => elem.textContent.match(/^Quantity: \d$/) !== null)[0].textContent.slice(-1));
+    const quantityString = Object.values(event.target.parentNode.parentNode.childNodes).filter((elem) => elem.textContent.match(/^Quantity: \d+$/) !== null)[0].textContent;
+    const max_pickup = parseInt(quantityString.slice(quantityString.indexOf(" ")), 10);
     let pickup_quantity = parseInt(pickup_quantity_elem.value, 10);
     if (increment && pickup_quantity !== max_pickup) {
         pickup_quantity++;
@@ -471,9 +610,7 @@ const check_drop_off = (event) => {
             validNumberOfItems = !isNaN(dropOffObject.number);
             break;
     }
-    if (validSelectedItem && validNumberOfItems) {
-        drop_off_submit.disabled = false;
-    }
+    drop_off_submit.disabled = !(validSelectedItem && validNumberOfItems);
 };
 
 // when the "Find fridges" button is pressed on the drop off page
@@ -482,6 +619,7 @@ const find_fridges = (event) => {
     const callback = () => {
         const itemType = availableItems.filter((item) => item.name === dropOffObject.name)[0].type;
         let availableFridges = fridges.filter((fridge) => {
+            console.log(fridge)
             if (
                 // fridge is not full
                 (fridge.capacity !== 100) &&
@@ -494,25 +632,18 @@ const find_fridges = (event) => {
             }
         });
 
-        // custom sort
-        availableFridges = availableFridges.sort((f1, f2) => {
-            // check if fridge doesn't have the item
-            const f1_item = f1.items.filter((item) => item.name === dropOffObject.name);
-            const f2_item = f2.items.filter((item) => item.name === dropOffObject.name);
-            if (f1_item.length === 1 && f2_item.length === 0) {
-                return 1;
-            } else if (f1_item.length === 0 && f2_item.length === 1) {
-                return -1;
-            } else {
-                // check which fridge has less of the item
-                const f1_item_count = f1_item[0].quantity;
-                const f2_item_count = f2_item[0].quantity;
-                if (f1_item_count > f2_item_count) {
+        if (availableFridges.length > 1) {
+            // custom sort
+            availableFridges = availableFridges.sort((f1, f2) => {
+                // check if fridge doesn't have the item
+                const f1_item = f1.items.filter((item) => item.name === dropOffObject.name);
+                const f2_item = f2.items.filter((item) => item.name === dropOffObject.name);
+                if (f1_item.length === 1 && f2_item.length === 0) {
                     return 1;
-                } else if (f1_item_count < f2_item_count) {
+                } else if (f1_item.length === 0 && f2_item.length === 1) {
                     return -1;
-                } else {
-                    // check which fridge is less full
+                } else if (f1_item.length === 0 && f2_item.length === 0) {
+                    // check which fridge is less full, since neither fridge has any quantity of said item
                     const f1_capacity = f1.capacity;
                     const f2_capacity = f2.capacity;
                     if (f1_capacity > f2_capacity) {
@@ -522,10 +653,31 @@ const find_fridges = (event) => {
                     } else {
                         return 0;
                     }
+                } else {
+                    // check which fridge has less of the item
+                    const f1_item_count = f1_item[0].quantity;
+                    const f2_item_count = f2_item[0].quantity;
+                    if (f1_item_count > f2_item_count) {
+                        return 1;
+                    } else if (f1_item_count < f2_item_count) {
+                        return -1;
+                    } else {
+                        // check which fridge is less full
+                        const f1_capacity = f1.capacity;
+                        const f2_capacity = f2.capacity;
+                        if (f1_capacity > f2_capacity) {
+                            return 1;
+                        } else if (f1_capacity < f2_capacity) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
                 }
-            }
-        });
+            });
+        }
 
+        // recreate section if needed (when find fridges is pressed again)
         let section = document.getElementById("found-fridges");
         if (section !== null) {
             body.removeChild(section);
@@ -534,8 +686,8 @@ const find_fridges = (event) => {
         section.id = "found-fridges";
         body.appendChild(section);
 
+        // creates the fridge buttons
         const fridge_ids = availableFridges.map((fridge) => fridge.name.replaceAll(" ", "-"));
-        console.log
         for (let i = 0; i < fridge_ids.length; i++) {
             const fridge = availableFridges[i];
 
@@ -545,6 +697,7 @@ const find_fridges = (event) => {
 
             const button = document.createElement("button");
             if (i === 0) {
+                // since we sorted the availableFridges array, index 0 is the optimal fridge
                 button.innerHTML += `Needs ${dropOffObject.name} the most!`;
             }
             button.appendChild(image);
@@ -577,39 +730,35 @@ const find_fridges = (event) => {
     }
 };
 
+// when a fridge is selected to be the recipient of the drop off items
 const update_fridge = (event) => {
+    const itemMetadata = availableItems.filter((item) => item.name === dropOffObject.name)[0];
     const payload = {
         fridge: event.target.id.replaceAll("-", " "),
-        item: dropOffObject.name,
-        quantity: dropOffObject.number
+        quantity: dropOffObject.number,
+        itemName: itemMetadata.name,
+        itemType: itemMetadata.type,
+        itemImg: itemMetadata.img
     };
+
+    // PUT item and fridge data
     const putXhttp = new XMLHttpRequest();
     putXhttp.open("PUT", "http://localhost:8000/updateFridge", true);
     putXhttp.setRequestHeader("Content-Type", "application/json");
     putXhttp.send(JSON.stringify(payload));
     putXhttp.onreadystatechange = () => {
         if (putXhttp.readyState === XMLHttpRequest.DONE && putXhttp.status === 200) {
+            // on success retrieve newer data
             const getXhttp = new XMLHttpRequest();
             getXhttp.open("GET", "http://localhost:8000/comm-fridge-data.json", true);
             getXhttp.send();
             getXhttp.onreadystatechange = () => {
                 if (getXhttp.readyState === XMLHttpRequest.DONE && getXhttp.status === 200) {
+                    // on success create the success notification
                     fridges = JSON.parse(getXhttp.responseText);
-                    const notification = document.createElement("p");
-                    notification.style.opacity = 1;
-                    notification.id = "found-fridges-notification";
-                    notification.innerHTML = `The item has been successfully added to the ${payload.fridge}!`;
-                    const htmlTag = document.querySelector("html");
-                    htmlTag.appendChild(notification);
-                    setTimeout(() => {
-                        const fadeEffect = setInterval(() => notification.style.opacity -= 0.01, 10);
-                        setTimeout(() => {
-                            notification.remove();
-                            clearInterval(fadeEffect);
-                        }, 2000);
-                    }, 2000);
-                    // // TODO: don't use alert
-                    // alert("The item has been successfully added to the fridge!");
+                    show_notification(`The item has been successfully added to the ${payload.fridge}!`);
+
+                    // i guess it's best to recreate the page at this point
                     create_drop_off_page();
                 }
             };
@@ -617,6 +766,56 @@ const update_fridge = (event) => {
     };
 };
 
+// event handler for "Add an item" fields
+const check_add_item_fields = (event) => {
+    const value = event.target.value;
+    switch (event.target.id) {
+        case "name-input":
+            if (value.match(/^[A-Z][a-z]+( [a-z]+)*$/)) {
+                event.target.style.backgroundColor = "white";
+                validNewItemName = true;
+            } else {
+                event.target.style.backgroundColor = "lightcoral";
+                validNewItemName = false;
+            }
+            break;
+        case "type-input":
+            if (value.match(/^[a-z]+$/)) {
+                event.target.style.backgroundColor = "white";
+                validNewItemType = true;
+            } else {
+                event.target.style.backgroundColor = "lightcoral";
+                validNewItemType = false;
+            }
+            break;
+        case "image-input":
+            const image = event.target.files[0];
+            validNewItemImage = image.type === "image/png" || image.type === "image/jpeg";
+            break;
+    }
+
+    // disable/enable the form submit button accordingly
+    add_item_submit.disabled = !(validNewItemName && validNewItemType && validNewItemImage);
+};
+
+// shows a notification briefly
+const show_notification = (text) => {
+    const notification = document.createElement("p");
+    notification.style.opacity = 1;
+    notification.id = "notification";
+    notification.innerHTML = text;
+    const htmlTag = document.querySelector("html");
+    htmlTag.appendChild(notification);
+
+    // very extra fade out effect
+    setTimeout(() => {
+        const fadeEffect = setInterval(() => notification.style.opacity -= 0.01, 10);
+        setTimeout(() => {
+            notification.remove();
+            clearInterval(fadeEffect);
+        }, 2000);
+    }, 2000);
+};
 
 
 

@@ -123,20 +123,16 @@ const processRequest = (request, response) => {
         });
     }
 
-    // else if (pathname === "/newStudent" && request.method === "POST") {
-    //     let body = "";
-    //     request.on("data", (data) => {
-    //         body += data;
-    //     });
-    //     request.on("end", () => {
-    //         const newStudent = JSON.parse(body);
-    //         updateStudents(newStudent);
+    else if (pathname === "/newItem" && request.method === "POST") {
+        let body = "";
+        request.on("data", (data) => body += data);
+        request.on("end", () => {
+            const json = JSON.parse(body);
+            addItem(json, response);
+        });
+    }
 
-    //         response.writeHeader(201);
-    //         response.end();
-    //     });
-    // }
-}
+};
 
 const updateFridge = (payload, response) => {
     file.readFile("comm-fridge-data.json", (readErr, data) => {
@@ -144,21 +140,21 @@ const updateFridge = (payload, response) => {
             throw readErr;
         }
         const commFridgeDataJSON = JSON.parse(data.toString());
-        // commFridgeDataJSON.forEach((fridge) => {
-        //     if (fridge.name === payload.fridge) {
-        //         fridge.items.forEach((item) => {
-        //             if (item.name === payload.item) {
-
-        //             }
-        //         });
-        //     }
-        // });
         const targetFridge = commFridgeDataJSON.filter((fridge) => fridge.name === payload.fridge)[0];
-        const targetItem = targetFridge.items.filter((item) => item.name === payload.item)[0]
+        const targetItem = targetFridge.items.filter((item) => item.name === payload.itemName);
 
         targetFridge.num_items_accepted += payload.quantity;
         targetFridge.can_accept_items -= payload.quantity;
-        targetItem.quantity += payload.quantity;
+        if (targetItem.length === 1) {
+            targetItem.quantity += payload.quantity;
+        } else {
+            targetFridge.items.push({
+                name: payload.itemName,
+                quantity: payload.quantity,
+                type: payload.itemType,
+                img: payload.itemImg
+            });
+        }
 
         const buffer = Buffer.from(JSON.stringify(commFridgeDataJSON), "utf-8");
         file.writeFile("comm-fridge-data.json", buffer, (writeErr) => {
@@ -171,25 +167,50 @@ const updateFridge = (payload, response) => {
     });
 };
 
-// const updateStudents = (newStudent) => {
-//     file.readFile("students.json", (readErr, data) => {
-//         if (readErr) {
-//             throw readErr;
-//         }
-//         const studentsJSON = JSON.parse(data.toString());
-//         studentsJSON.students.push(newStudent);
-        
-//         const buffer = Buffer.from(JSON.stringify(studentsJSON), "utf-8");
-//         file.writeFile("students.json", buffer, (writeErr) => {
-//             if (writeErr) {
-//                 throw writeErr;
-//             }
-//         });
-//     });
-// };
+const addItem = (payload, response) => {
+    const name = payload.name;
+    const type = payload.type;
+    const path = payload.path.replaceAll(" ", "_");
+    const base64 = payload.data.split(";base64,").pop();
+    let imageExists = false;
+    try {
+        imageExists = file.existsSync(payload.path);
+    } catch (err) {
+        console.log(err);
+    }
+    if (!imageExists) {
+        // makes dir if not exists
+        file.mkdirSync(`../images/${type}`, {recursive: true});
 
-// run the server: node server.js
-// if you make a change to your server code, you must restart the server
+        // write image file
+        file.writeFileSync(`..${path}`, base64, {encoding: "base64"}, (writeErr) => {
+            if (writeErr) {
+                throw writeErr;
+            }
+        });
+    }
+
+    file.readFile("comm-fridge-items.json", (readErr, data) => {
+        if (readErr) {
+            throw readErr;
+        }
+        const commFridgeItemsJSON = JSON.parse(data.toString());
+        commFridgeItemsJSON.push({
+            name: name,
+            type: type,
+            img: `http://localhost:8000${path}`
+        });
+
+        const buffer = Buffer.from(JSON.stringify(commFridgeItemsJSON), "utf-8");
+        file.writeFile("comm-fridge-items.json", buffer, (writeErr) => {
+            if (writeErr) {
+                throw writeErr;
+            }
+            response.writeHeader(201);
+            response.end();
+        });
+    });
+};
 
 const server = http.createServer(processRequest); // create the server object
 
